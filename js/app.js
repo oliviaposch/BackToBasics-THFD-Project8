@@ -36,7 +36,6 @@ function checkStatus(response){
 //employee cards
 function generateCards(data) {
     employees = data;
-    //console.log(data);
     let employeeHTML = '';
 
     // loop through each employee
@@ -90,19 +89,27 @@ function displayModal(index) { //name, picture, email, location, phone, dob
     `
     overlay.classList.remove('hidden');
     modalContent.innerHTML = modalHTML;
-    
+
+    //exceeds expectations Arrows
     const nextArrow = document.querySelector('.next'); //console.log(nextArrow);
     const prevArrow = document.querySelector('.prev');
-    nextArrow.addEventListener('click', () => {
-        displayModal(index + 1);
-    })
-    //preview arrow
-    prevArrow.addEventListener('click', () => {
-        displayModal(index - 1);
-
-    })
+        //next arrow
+        nextArrow.addEventListener('click', () => {
+            // displayModal(index + 1);
+            if (index < employees.length - 1) {
+                index++;
+				displayModal(index);
+			}
+        })
+        //preview arrow
+        prevArrow.addEventListener('click', () => {
+            //displayModal(index - 1);
+            if (index > 0) {
+				index--;
+				displayModal(index);
+			}
+        })
 }
-
 
 
 // // ------------------------------------------
@@ -113,9 +120,8 @@ function displayModal(index) { //name, picture, email, location, phone, dob
 cards.addEventListener('click', e => {
     if (e.target !== cards){
         const card = e.target.closest('.card');
-        const index = card.getAttribute('data-index');
+        let index = card.getAttribute('data-index');
         displayModal(index);
-           //next arrow
 
     }
 
@@ -131,7 +137,7 @@ modalClose.addEventListener('click', () => {
 
 searchImput.addEventListener('keyup', event => { 
     const index = document.querySelectorAll('.card');
-    if(searchImput.value.length > 0) { console.log(searchImput.value);
+    if(searchImput.value.length > 0) {
         for(let i = 0; i < index.length; i++) {
             //console.log(index[i]);
             if(index[i].getAttribute('data-name').toLowerCase().indexOf(searchImput.value.toLowerCase()) < 0) {
