@@ -1,22 +1,27 @@
 //https://randomuser.me/
 //https://randomuser.me/documentation
 
+let employees = [];
+//const urlAPI = 'https://randomuser.me/api/?results=12&nat=us';
+const urlAPI = 'https://randomuser.me/api/?results=12&inc=name, picture, email, location, phone, dob &noinfo &nat=US';
 const cards = document.querySelector('.cards');
 const overlay = document.querySelector('.popup-window');
+const modalClose = document.querySelector('.close');
+const modalContent = document.querySelector('.modal-content');
+
+
 
 // ------------------------------------------
 //  FETCH FUNCTIONS
 // ------------------------------------------
-function fetchData(url) {
-    return fetch(url)
-            .then(checkStatus)
-            .then(response => response.json())
-            .catch(error => {
-                cards.innerHTML = '<h3>Looks like there was a problem!</h3>';
-            })
-}
-fetchData('https://randomuser.me/api/?results=12&nat=us')
-    .then(data => generateCards(data.results))
+fetch(urlAPI)
+    .then(checkStatus)
+    .then(response => response.json())
+    .then(response => response.results)
+    .then(generateCards)
+    .catch(error => {
+        cards.innerHTML = '<h3>Looks like there was a problem!</h3>';
+    })
 
 // ------------------------------------------
 //  HELPER FUNCTIONS
@@ -28,46 +33,75 @@ function checkStatus(response){
         return Promise.reject(new Error(response.statusText));
     }
 }
+//employee cards
 function generateCards(data) {
+    employees = data;
+    //console.log(data);
+    let employeeHTML = '';
 
-    data.map(card => { 
-        // parse birthday Date
-        const brth = new Date(card.dob.date).toLocaleString('en-GB').split(',');
+    // loop through each employee
+    employees.forEach((employee, index) => {
+        let name = employee.name;
+        let email = employee.email;
+        let city = employee.location.city;
+        let picture = employee.picture;
 
-        //create employed cards
-        const cardElem = document.createElement('div');
-        cardElem.classList.add('card');
+        employeeHTML += `
+            <div class="card" data-index="${index}">
+                <div class="person-img">
+                    <img src="${picture.large}">
+                </div>
+                <div class="person-info">
+                    <h2>${name.first} ${name.last}</h2>
+                    <p class="email">${email}</p>
+                    <p class="city">${city}</p>
+                </div>
+            </div>
+        `   
+    });
+    cards.innerHTML = employeeHTML;
+   
+}
 
-        //add card Element cards container 
-        cards.appendChild(cardElem);
-        cardElem.innerHTML = `
+//overflow Modal box
+function displayModal(index) { //name, picture, email, location, phone, dob
+    let { name, dob, phone, email, location: { city, street, state, postcode
+    }, picture } = employees[index];
+    // parse birthday Date
+    const brth = new Date(dob.date).toLocaleString('en-GB').split(',');
+    const modalHTML = `
             <div class="person-img">
-                <img src="${card.picture.large}">
+                <img src="${picture.large}">
             </div>
         
             <div class="person-info">
-                <h2>${card.name.first} ${card.name.last}</h2>
-                <p class="email">${card.email}</p>
-                <p class="city">${card.location.city}</p>
+                <h2>${name.first} ${name.last}</h2>
+                <p class="email">${email}</p>
+                <p class="city">${location.city}</p>
             </div>
-            <hr class="line none">
-            <div class="more none">
-                <p>${card.cell}</p>
-                <p>${card.location.street.number} ${card.location.street.name}, ${card.location.state} ${card.location.postcode}</p>
+            <hr class="line">
+            <div class="more">
+                <p>${phone}</p>
+                <p>${location.street}, ${location.state} ${location.postcode}</p>
                 <p>Birthday: ${brth[0]}</p>
             </div>
-        `;
-    });
+    `
+    overlay.classList.remove('hidden');
+    modalContent.innerHTML = modalHTML;
 }
 
-function windowOverlay(event){
-    //console.log(employedCard);
-    const targetCard = event.target;
-       console.log(targetCard);
-}
+// // ------------------------------------------
+// //  EVENT LISTENERS
+// // ------------------------------------------
 
-// ------------------------------------------
-//  EVENT LISTENERS
-// ------------------------------------------
-
-console.log(cards.children.length);
+cards.addEventListener('click', e => {
+    if (e.target !== cards){
+        const card = e.target.closest('.card');
+        const index = card.getAttribute('data-index');
+        console.log('not cards container');
+        displayModal(index);
+    }
+})
+modalClose.addEventListener('click', () => {
+    overlay.classList.add('hidden');
+})
