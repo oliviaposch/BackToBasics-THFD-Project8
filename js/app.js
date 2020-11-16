@@ -11,7 +11,6 @@ const modalContent = document.querySelector('.modal-content');
 const searchImput = document.getElementById('search');
 
 
-
 // ------------------------------------------
 //  FETCH FUNCTIONS
 // ------------------------------------------
@@ -86,9 +85,22 @@ function displayModal(index) { //name, picture, email, location, phone, dob
                 <p> ${employees[index].location.street.number} ${employees[index].location.street.name}, ${employees[index].location.city} ${employees[index].location.postcode} ${employees[index].location.state}</p>
                 <p>Birthday: ${brth[0]}</p>
             </div>
+            <a class="prev">&#10094;</a>
+            <a class="next">&#10095;</a>
     `
     overlay.classList.remove('hidden');
     modalContent.innerHTML = modalHTML;
+    
+    const nextArrow = document.querySelector('.next'); //console.log(nextArrow);
+    const prevArrow = document.querySelector('.prev');
+    nextArrow.addEventListener('click', () => {
+        displayModal(index + 1);
+    })
+    //preview arrow
+    prevArrow.addEventListener('click', () => {
+        displayModal(index - 1);
+
+    })
 }
 
 
@@ -103,19 +115,12 @@ cards.addEventListener('click', e => {
         const card = e.target.closest('.card');
         const index = card.getAttribute('data-index');
         displayModal(index);
+           //next arrow
+
     }
+
 })
-//next arrow
-document.querySelector('.next').addEventListener('click', e => {
-    const index = document.querySelectorAll('.card')[1].getAttribute('data-index');
-    displayModal(index);
-    
-})
-//preview arrow
-document.querySelector('.prev').addEventListener('click', e => {
-    const index = document.querySelectorAll('.card')[0].getAttribute('data-index');
-    displayModal(index);
-})
+
 //close modal window 
 modalClose.addEventListener('click', () => {
     overlay.classList.add('hidden');

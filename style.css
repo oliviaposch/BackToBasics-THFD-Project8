@@ -193,8 +193,16 @@ input#search {
     font-weight: bold;
     font-size: 18px;
     user-select: none;
+    top: 50%;
+    padding: 13px;
+    position: absolute;
 }
-
+.prev {
+    left: 0;  
+}
+.next{
+    right: 0;
+}
 @media all and (max-width: 420px) and (min-width:320px){
     .person-img {
         width: 100%;
