@@ -8,6 +8,7 @@ const cards = document.querySelector('.cards');
 const overlay = document.querySelector('.popup-window');
 const modalClose = document.querySelector('.close');
 const modalContent = document.querySelector('.modal-content');
+const searchImput = document.getElementById('search');
 
 
 
@@ -45,9 +46,9 @@ function generateCards(data) {
         let email = employee.email;
         let city = employee.location.city;
         let picture = employee.picture;
-
+        
         employeeHTML += `
-            <div class="card" data-index="${index}">
+            <div class="card" data-fancybox="employee" data-index="${index}" data-name="${name.first} ${name.last}">
                 <div class="person-img">
                     <img src="${picture.large}">
                 </div>
@@ -65,8 +66,8 @@ function generateCards(data) {
 
 //overflow Modal box
 function displayModal(index) { //name, picture, email, location, phone, dob
-    let { name, dob, phone, email, location: { city, street, state, postcode
-    }, picture } = employees[index];
+    let { name, dob, phone, email, picture } = employees[index];
+
     // parse birthday Date
     const brth = new Date(dob.date).toLocaleString('en-GB').split(',');
     const modalHTML = `
@@ -82,7 +83,7 @@ function displayModal(index) { //name, picture, email, location, phone, dob
             <hr class="line">
             <div class="more">
                 <p>${phone}</p>
-                <p>${location.street}, ${location.state} ${location.postcode}</p>
+                <p> ${employees[index].location.street.number} ${employees[index].location.street.name}, ${employees[index].location.city} ${employees[index].location.postcode} ${employees[index].location.state}</p>
                 <p>Birthday: ${brth[0]}</p>
             </div>
     `
@@ -90,18 +91,50 @@ function displayModal(index) { //name, picture, email, location, phone, dob
     modalContent.innerHTML = modalHTML;
 }
 
+
+
 // // ------------------------------------------
 // //  EVENT LISTENERS
 // // ------------------------------------------
 
+//open modal window
 cards.addEventListener('click', e => {
     if (e.target !== cards){
         const card = e.target.closest('.card');
         const index = card.getAttribute('data-index');
-        console.log('not cards container');
         displayModal(index);
     }
 })
+//next arrow
+document.querySelector('.next').addEventListener('click', e => {
+    const index = document.querySelectorAll('.card')[1].getAttribute('data-index');
+    displayModal(index);
+    
+})
+//preview arrow
+document.querySelector('.prev').addEventListener('click', e => {
+    const index = document.querySelectorAll('.card')[0].getAttribute('data-index');
+    displayModal(index);
+})
+//close modal window 
 modalClose.addEventListener('click', () => {
     overlay.classList.add('hidden');
 })
+
+//exceeds expectations
+//searchImput.value
+
+searchImput.addEventListener('keyup', event => { 
+    const index = document.querySelectorAll('.card');
+    if(searchImput.value.length > 0) { console.log(searchImput.value);
+        for(let i = 0; i < index.length; i++) {
+            //console.log(index[i]);
+            if(index[i].getAttribute('data-name').toLowerCase().indexOf(searchImput.value.toLowerCase()) < 0) {
+                index[i].style.display = 'none';
+            } else{
+                index[i].style.display = 'block';
+            }
+        }
+    }
+})
+

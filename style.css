@@ -171,6 +171,30 @@ p{
 .popup-window .more{
     padding-top: 1.6rem;
 }
+/* exceed expectations */
+.header {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    align-items: center;
+}
+.header h1 {
+     margin-right: 2em;
+}
+input#search {
+    padding: 5px 17px;
+    border: 1px solid #ccc;
+    border-radius: 3px;
+    margin-bottom: 3em;
+   
+}
+.prev, .next {
+    cursor: pointer;
+    font-weight: bold;
+    font-size: 18px;
+    user-select: none;
+}
+
 @media all and (max-width: 420px) and (min-width:320px){
     .person-img {
         width: 100%;
@@ -183,6 +207,15 @@ p{
         width: 270px;
     }
 }
+@media screen and (min-width: 806px){
+    input#search {
+        margin-bottom: 0;
+    }
+    .header h1 {
+        margin-right: 0;
+   }
+}
+
 @media screen and (min-width: 1300px) {
    .content{
        width: 1300px;
