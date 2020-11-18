@@ -143,7 +143,7 @@ searchImput.addEventListener('keyup', event => {
             if(index[i].getAttribute('data-name').toLowerCase().indexOf(searchImput.value.toLowerCase()) < 0) {
                 index[i].style.display = 'none';
             } else{
-                index[i].style.display = 'block';
+                index[i].style.display = 'inherit';
             }
         }
     }
