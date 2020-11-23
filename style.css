@@ -120,7 +120,7 @@ button.close {
 }
 h1 {
     font-family: 'Roboto', sans-serif, Arial, Helvetica;
-    font-size: 1.3rem;
+    font-size: 1.7rem;
     padding-top: 2rem;
     padding-bottom: 2rem;
     text-transform: uppercase;
@@ -177,12 +177,14 @@ p{
     flex-wrap: wrap;
     justify-content: space-between;
     align-items: center;
+    margin-bottom: 2em;
 }
 .header h1 {
      margin-right: 2em;
 }
 input#search {
-    padding: 5px 17px;
+    /* padding: 5px 17px; */
+    padding: 10px 26px;
     border: 1px solid #ccc;
     border-radius: 3px;
     margin-bottom: 3em;
