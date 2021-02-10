@@ -33,6 +33,7 @@ function checkStatus(response){
         return Promise.reject(new Error(response.statusText));
     }
 }
+
 //employee cards
 function generateCards(data) {
     employees = data;
@@ -59,13 +60,13 @@ function generateCards(data) {
         `   
     });
     cards.innerHTML = employeeHTML;
-   
 }
 
 //overflow Modal box
 function displayModal(index) { //name, picture, email, location, phone, dob
+    
     let { name, dob, phone, email, picture } = employees[index];
-
+   
     // parse birthday Date
     const brth = new Date(dob.date).toLocaleString('en-GB').split(',');
     const modalHTML = `
@@ -137,15 +138,20 @@ modalClose.addEventListener('click', () => {
 
 searchImput.addEventListener('keyup', event => { 
     const index = document.querySelectorAll('.card');
-    if(searchImput.value.length > 0) {
         for(let i = 0; i < index.length; i++) {
+            if(searchImput.value.length > 0 ) {
             //console.log(index[i]);
-            if(index[i].getAttribute('data-name').toLowerCase().indexOf(searchImput.value.toLowerCase()) < 0) {
-                index[i].style.display = 'none';
-            } else{
-                index[i].style.display = 'inherit';
+                if(index[i].getAttribute('data-name').toLowerCase().indexOf(searchImput.value.toLowerCase()) < 0) {
+                    index[i].style.display = 'none';
+                } else{
+                    index[i].style.display = 'inherit';
+                }
+            }
+            else{
+                index[i].style.display = '';
             }
         }
-    }
+    
+
 })
 
